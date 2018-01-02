@@ -9,7 +9,7 @@ const extractSass = new ExtractTextPlugin({
 })
 
 let config = {
-  entry: helpers.root('/src/index.js'),
+  entry: helpers.root('/src/index-router.js'),
   output: {
     path: helpers.root('/public'),
     filename: 'js/[name].[hash].js'
