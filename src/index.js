@@ -1,31 +1,22 @@
 import React from 'react'
 import { render } from 'react-dom'
 
-function Button (props) {
-  return <button onClick={props.onClick}>{props.text}</button>
-}
+import { User } from './components/user'
+import { HelloButton } from './components/helloButton'
 
-function HelloButton () {
-  function handleClick () {
-    window.alert('Hello!')
-  }
-  return (
-    <div>
-      <p>Choose a button below</p>
-      <Button onClick={handleClick} text='Say Hello' />
-      <GoodbyeButton />
-    </div>
-  )
-}
+import './styles.scss'
 
-function GoodbyeButton () {
-  function handleClick () {
-    window.alert('Goodbye!')
-  }
-  return <Button onClick={handleClick} text='Say Goodbye' />
+if (navigator.serviceWorker && process.env.NODE_ENV === 'production') {
+  navigator.serviceWorker.register('sw.js')
+        .catch(function (err) {
+          console.error('Unable to register service worker.', err)
+        })
 }
 
 render(
-  <HelloButton />,
+  <div>
+    <User />
+    <HelloButton />
+  </div>,
   document.getElementById('root')
 )
