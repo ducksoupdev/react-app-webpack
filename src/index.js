@@ -13,9 +13,14 @@ if (navigator.serviceWorker && process.env.NODE_ENV === 'production') {
         })
 }
 
+const userObj = {
+  firstName: 'Matt',
+  lastName: 'Levy'
+}
+
 render(
   <div>
-    <User />
+    <User user={userObj} />
     <HelloButton />
   </div>,
   document.getElementById('root')

@@ -4,13 +4,16 @@ function formatName (user) {
   return user.firstName + ' ' + user.lastName
 }
 
-const userObj = {
-  firstName: 'Matt',
-  lastName: 'Levy'
+export const User = (props) => {
+  if (props.user) {
+    return (
+      <h1>
+        Hello, {formatName(props.user)}!
+      </h1>
+    )
+  } else {
+    return (
+      <h1>Hello, Guest!</h1>
+    )
+  }
 }
-
-export const User = () => (
-  <h1>
-    Hello, {formatName(userObj)}!
-  </h1>
-)
