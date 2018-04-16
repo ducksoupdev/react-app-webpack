@@ -14,7 +14,10 @@ webpackConfig.devServer = {
   historyApiFallback: true,
   contentBase: './src',
   noInfo: true,
-  open: true
+  open: true,
+  openPage: 'index.html',
+  host: '0.0.0.0',
+  public: 'localhost:8080'
 }
 
 module.exports = webpackConfig

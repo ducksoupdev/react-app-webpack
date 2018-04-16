@@ -7,10 +7,9 @@ import { HelloButton } from './components/helloButton'
 import './styles.scss'
 
 if (navigator.serviceWorker && process.env.NODE_ENV === 'production') {
-  navigator.serviceWorker.register('sw.js')
-        .catch(function (err) {
-          console.error('Unable to register service worker.', err)
-        })
+  navigator.serviceWorker.register('sw.js').catch(function (err) {
+    console.error('Unable to register service worker.', err)
+  })
 }
 
 const userObj = {

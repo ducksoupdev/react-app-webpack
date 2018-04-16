@@ -1,14 +1,14 @@
 const helpers = require('./helpers')
 const DefinePlugin = require('webpack/lib/DefinePlugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const autoprefixer = require('autoprefixer')
 
-const extractSass = new ExtractTextPlugin({
-  filename: 'css/[name].[contenthash].css',
-  disable: process.env.NODE_ENV === 'development'
-})
+const isProduction = process.env.NODE_ENV === 'production'
 
-let config = {
+const createCssConfig = (config) => isProduction ? [MiniCssExtractPlugin.loader, ...config.slice(1)] : config
+
+let webpackConfig = {
+  mode: isProduction ? 'production' : 'development',
   entry: helpers.root('/src/index-router.js'),
   output: {
     path: helpers.root('/public'),
@@ -23,35 +23,70 @@ let config = {
       },
       {
         test: /\.scss$/,
-        use: extractSass.extract({
-          use: [{
+        use: createCssConfig([
+          {
+            loader: 'style-loader',
+            options: {
+              sourceMap: !isProduction
+            }
+          },
+          {
             loader: 'css-loader',
             options: {
+              url: false,
               minimize: false,
-              sourceMap: false,
-              importLoaders: 2
+              sourceMap: !isProduction,
+              importLoaders: 1
             }
           },
           {
             loader: 'postcss-loader',
             options: {
-              plugins: () => [autoprefixer]
+              plugins: () => [autoprefixer],
+              sourceMap: !isProduction
             }
           },
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: false
+              sourceMap: !isProduction
             }
           }
-          ],
-          fallback: 'style-loader'
-        })
+        ])
+      },
+      {
+        test: /\.css$/,
+        use: createCssConfig([
+          {
+            loader: 'style-loader',
+            options: {
+              sourceMap: !isProduction
+            }
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              url: false,
+              minimize: false,
+              sourceMap: !isProduction,
+              importLoaders: 1
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [autoprefixer],
+              sourceMap: !isProduction
+            }
+          }
+        ])
       }
     ]
   },
   plugins: [
-    extractSass,
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[hash].css'
+    }),
     new DefinePlugin({
       'process.env': {
         'ENV': JSON.stringify(process.env.NODE_ENV),
@@ -61,4 +96,4 @@ let config = {
   ]
 }
 
-module.exports = config
+module.exports = webpackConfig
