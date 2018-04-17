@@ -1,9 +1,16 @@
-const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { GenerateSW } = require('workbox-webpack-plugin')
 const helpers = require('./helpers')
 const webpackConfig = require('./webpack.config.base')
+
+webpackConfig.resolve = {
+  alias: {
+    'react': 'preact-compat',
+    'react-dom': 'preact-compat'
+  }
+}
 
 webpackConfig.plugins = [...webpackConfig.plugins,
   new HtmlWebpackPlugin({
@@ -24,8 +31,7 @@ webpackConfig.plugins = [...webpackConfig.plugins,
     }
   }),
   new UglifyJsPlugin({
-    include: /\.js$/,
-    compress: true
+    include: /\.js$/
   }),
   new CompressionPlugin({
     asset: '[path].gz[query]',

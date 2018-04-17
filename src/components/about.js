@@ -1,7 +1,9 @@
 import React from 'react'
 
+import styles from './about.scss'
+
 export const About = () => (
   <div>
-    <h2>About</h2>
+    <h2 className={styles.title}>About</h2>
   </div>
 )

@@ -5,7 +5,7 @@ const autoprefixer = require('autoprefixer')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-const createCssConfig = (config) => isProduction ? [MiniCssExtractPlugin.loader, ...config.slice(1)] : config
+const createCssConfig = (config) => isProduction ? [MiniCssExtractPlugin.loader, ...config.slice(1)] : ['css-hot-loader', ...config]
 
 let webpackConfig = {
   mode: isProduction ? 'production' : 'development',
@@ -33,10 +33,12 @@ let webpackConfig = {
           {
             loader: 'css-loader',
             options: {
+              modules: true,
               url: false,
               minimize: false,
               sourceMap: !isProduction,
-              importLoaders: 1
+              importLoaders: 1,
+              localIdentName: '[name]__[local]___[hash:base64:5]'
             }
           },
           {
@@ -66,10 +68,12 @@ let webpackConfig = {
           {
             loader: 'css-loader',
             options: {
+              modules: true,
               url: false,
               minimize: false,
               sourceMap: !isProduction,
-              importLoaders: 1
+              importLoaders: 1,
+              localIdentName: '[name]__[local]___[hash:base64:5]'
             }
           },
           {
